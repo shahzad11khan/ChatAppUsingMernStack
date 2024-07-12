@@ -1,13 +1,31 @@
 import React, { useEffect, useState } from "react";
 import socketIo from "socket.io-client";
-import { userinput } from "./join";
 import Message from "./message";
+import { userinput } from "./join";
+
+import { FromName, WhichUser } from "./Private";
 let socket;
 const Endpoint = "http://localhost:8000/";
 const Chat = () => {
+  // Reload the page once when component mounts
+
   const [messages, setMessages] = useState([]);
   const [id, setId] = useState("");
   const [inputMessage, setInputMessage] = useState(""); // Separate state for input message
+  // console.log("Group User: ", String(userinput));
+  // console.log("Private User: ", String(FromName), String(WhichUser));
+  let username = String(userinput);
+  let Fromusername = String(FromName);
+  let usernamephone = String(WhichUser);
+
+  console.log(typeof username, typeof Fromusername, typeof usernamephone);
+  if (username !== "") {
+    Fromusername = null;
+    usernamephone = null;
+  } else {
+    username = null;
+  }
+  console.log(username, Fromusername, usernamephone);
 
   useEffect(() => {
     socket = socketIo(Endpoint, { transports: ["websocket"] });
@@ -17,11 +35,12 @@ const Chat = () => {
       //   alert("Connected to server");
       setId(socket.id); // Set the socket ID in state
     });
-
-    // Emit 'join' event with userinput
     console.log(socket); // Set the socket ID in state
-    socket.emit("join", userinput);
-
+    socket.emit("join", {
+      groupchat: username,
+      fromchat: Fromusername,
+      withchat: usernamephone,
+    });
     socket.on("userjoined", (data) => {
       setMessages((prevMessages) => [...prevMessages, data]);
       console.log(`${data.user}: ${data.message}`);
@@ -38,11 +57,11 @@ const Chat = () => {
       socket.off(); // Remove all event listeners
     };
   }, []);
-
   useEffect(() => {
     socket.on("sendMessage", (data) => {
       setMessages((prevMessages) => [...prevMessages, data]);
-      console.log(data.userid, data.message, data.id);
+      console.log(id);
+      console.log(data.userid, data.message, data.id, data.whichuser);
     });
     return () => {
       socket.off();
@@ -51,7 +70,13 @@ const Chat = () => {
 
   const sendMessage = () => {
     const message = document.getElementById("msg").value;
-    socket.emit("message", { message, id });
+    socket.emit("message", {
+      message,
+      id,
+      username,
+      Fromusername,
+      usernamephone,
+    });
     document.getElementById("msg").value = "";
     setInputMessage("");
   };
@@ -66,11 +91,12 @@ const Chat = () => {
     return () => {};
   }, [messages]);
 
+  console.log(messages);
   return (
     <div className="flex flex-col justify-between items-center  p-4 w-3/6 m-auto border-2 border-black rounded-xl bg-gray-200">
       <div className="text-center ">
-        <h1 className="text-4xl font-bold text-blue-500">
-          Welcome, {userinput}!
+        <h1 className="text-2xl font-bold text-blue-500">
+          Welcome,{userinput ? userinput : FromName} Chat With {WhichUser}!
         </h1>
       </div>
       <div className="bg-red-100 h-[400px] w-full overflow-y-scroll p-2">

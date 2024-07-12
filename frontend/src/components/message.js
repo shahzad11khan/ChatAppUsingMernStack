@@ -1,6 +1,7 @@
 import React from "react";
 
 const Message = ({ user, message }) => {
+  console.log({ user, message });
   return (
     <div className="gap-5">
       {user ? (
@@ -8,7 +9,7 @@ const Message = ({ user, message }) => {
           <div
             className={`text-base border-2 border-black pl-2 rounded-lg mt-2 w-[50%]`}
           >
-            {`${user} : ${message}`}
+            {`You : ${message}`}
           </div>
         </div>
       ) : (

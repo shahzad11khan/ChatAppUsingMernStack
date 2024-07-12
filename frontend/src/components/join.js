@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
-let userinput;
+let userinput = "";
 const JoinUser = () => {
   userinput = document.getElementById("joininput").value;
   document.getElementById("joininput").value = "";
