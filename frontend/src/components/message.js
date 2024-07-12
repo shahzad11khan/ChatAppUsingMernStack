@@ -1,7 +1,8 @@
 import React from "react";
 
 const Message = ({ user, message, WhichUser, groupuser }) => {
-  console.log({ user, message, WhichUser, groupuser });
+  // console.log({ user, message, WhichUser, groupuser });
+
   return (
     <div className="gap-5">
       {user ? (

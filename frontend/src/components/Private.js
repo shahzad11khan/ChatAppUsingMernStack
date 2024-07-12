@@ -52,7 +52,12 @@ const Private = () => {
         />
       </div>
       {/* {error && <p style={{ color: "red" }}>{error}</p>} */}
-      <div className="flex items-center justify-between mt-3">
+      <div className="flex items-center gap-3">
+        <a href="/">
+          <button className="w-full px-4 py-2 bg-blue-500 text-white rounded shadow hover:bg-blue-600 transition">
+            Back
+          </button>
+        </a>
         <Link to="/chat">
           <button
             onClick={handleJoinPrivateChat}

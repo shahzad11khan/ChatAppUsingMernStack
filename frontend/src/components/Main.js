@@ -4,9 +4,9 @@ const Main = () => {
   return (
     <>
       {" "}
-      <h1 className="text-4xl font-bold text-gray-800  flex justify-center">
-        Shahzad Chat Application
-      </h1>
+      <h4 className="text-4xl font-bold text-gray-800  flex justify-center">
+        `Shahzad` Chat Application
+      </h4>
       <div className="min-h-screen bg-gray-100 flex items-center justify-center gap-2">
         <a href="/register">
           <button className="w-full px-4 py-2 bg-blue-500 text-white rounded shadow hover:bg-blue-600 transition">

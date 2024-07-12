@@ -4,9 +4,11 @@ import Message from "./message";
 import { userinput } from "./join";
 import { FromName, WhichUser } from "./Private";
 import EmojiPicker from "emoji-picker-react";
+import { useNavigate } from "react-router-dom";
 let socket;
 const Endpoint = "http://localhost:8000/";
 const Chat = () => {
+  const nav = useNavigate();
   const [messages, setMessages] = useState([]);
   const [id, setId] = useState("");
   const [inputMessage, setInputMessage] = useState("");
@@ -15,7 +17,8 @@ const Chat = () => {
   let Fromusername = String(FromName);
   let usernamephone = String(WhichUser);
 
-  console.log(typeof username, typeof Fromusername, typeof usernamephone);
+  // console.log(typeof username, typeof Fromusername, typeof usernamephone);
+
   if (username !== "") {
     Fromusername = null;
     usernamephone = null;
@@ -23,6 +26,9 @@ const Chat = () => {
     username = null;
   }
   console.log(username, Fromusername, usernamephone);
+  if (username === "" || Fromusername == "") {
+    nav("/");
+  }
   const onEmojiClick = (emojiObject) => {
     setInputMessage((prevInput) => prevInput + emojiObject.emoji);
   };
@@ -108,7 +114,6 @@ const Chat = () => {
           <Message
             key={i}
             user={item.id === id ? "" : item.userFrom}
-            // groupuser={item.id !== id ? userinput : item.groupchatuser}
             groupuser={item.id === id ? "" : item.groupchatuser}
             message={item.message}
             WhichUser={WhichUser}
@@ -116,21 +121,25 @@ const Chat = () => {
         ))}
       </div>
       <div className="w-full max-w-md mt-3">
-        <div className="flex items-center">
+        <div className="flex items-center xs:flex-col">
           <input
             type="text"
             id="msg"
             placeholder="Type your message"
             value={inputMessage} // Controlled input field
-            onChange={(e) => setInputMessage(e.target.value)} // Update state with input value
+            // onChange={(e) => setInputMessage(e.target.value)} // Update state with input value
+            onChange={(e) => {
+              setShowEmojiPicker(false); // Hide the emoji picker
+              setInputMessage(e.target.value); // Update state with input value
+            }}
             onKeyPress={(event) =>
               event.key === "Enter" ? sendMessage() : null
             }
-            className="flex-grow px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="flex-grow px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
           />
           <button
             onClick={() => setShowEmojiPicker((prev) => !prev)}
-            className="ml-2 px-4 py-2 text-white font-semibold hover:bg-cyan-300 rounded-md"
+            className="ml-2 px-4 py-2 text-white font-semibold hover:bg-cyan-200 rounded-md"
           >
             😀
           </button>

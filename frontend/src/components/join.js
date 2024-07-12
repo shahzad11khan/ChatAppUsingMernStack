@@ -19,20 +19,28 @@ const Join = () => {
           onChange={(e) => setusername(e.target.value)}
           className="px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
-        <Link to="/chat">
+        <div className="flex gap-2">
           {" "}
-          <button
-            onClick={JoinUser}
-            className={`px-4 py-2 text-white font-semibold rounded-md ${
-              username
-                ? "bg-blue-500 hover:bg-blue-600"
-                : "bg-gray-300 cursor-not-allowed"
-            }`}
-            disabled={!username}
-          >
-            Join chat
-          </button>
-        </Link>
+          <a href="/">
+            <button className="w-full px-4 py-2 bg-blue-500 text-white rounded shadow hover:bg-blue-600 transition">
+              Back
+            </button>
+          </a>
+          <Link to="/chat">
+            {" "}
+            <button
+              onClick={JoinUser}
+              className={`px-4 py-2 text-white font-semibold rounded-md ${
+                username
+                  ? "bg-blue-500 hover:bg-blue-600"
+                  : "bg-gray-300 cursor-not-allowed"
+              }`}
+              disabled={!username}
+            >
+              Join chat
+            </button>
+          </Link>
+        </div>
       </div>
     </>
   );
