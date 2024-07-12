@@ -1,7 +1,7 @@
 import React from "react";
 
-const Message = ({ user, message }) => {
-  console.log({ user, message });
+const Message = ({ user, message, WhichUser, groupuser }) => {
+  console.log({ user, message, WhichUser, groupuser });
   return (
     <div className="gap-5">
       {user ? (
@@ -9,7 +9,15 @@ const Message = ({ user, message }) => {
           <div
             className={`text-base border-2 border-black pl-2 rounded-lg mt-2 w-[50%]`}
           >
-            {`You : ${message}`}
+            {`You ${WhichUser}: ${message}`}
+          </div>
+        </div>
+      ) : groupuser ? (
+        <div className="flex justify-start">
+          <div
+            className={`text-base border-2 border-black pl-2 rounded-lg mt-2 w-[50%]`}
+          >
+            {`You: ${message}`}
           </div>
         </div>
       ) : (

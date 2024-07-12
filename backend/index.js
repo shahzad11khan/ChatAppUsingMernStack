@@ -173,7 +173,8 @@ io.on("connect", (socket) => {
         await newMessage.save();
         // io.emit("sendMessage", { userid: users[id], message, id });
         io.emit("sendMessage", {
-          userid: userss.from,
+          userFrom: userss.from,
+          groupchatuser: userss.groupchatuser,
           message,
           whichuser: usernamephone,
           id: socket.id,

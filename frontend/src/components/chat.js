@@ -7,13 +7,10 @@ import { FromName, WhichUser } from "./Private";
 let socket;
 const Endpoint = "http://localhost:8000/";
 const Chat = () => {
-  // Reload the page once when component mounts
-
   const [messages, setMessages] = useState([]);
   const [id, setId] = useState("");
-  const [inputMessage, setInputMessage] = useState(""); // Separate state for input message
-  // console.log("Group User: ", String(userinput));
-  // console.log("Private User: ", String(FromName), String(WhichUser));
+  const [inputMessage, setInputMessage] = useState("");
+
   let username = String(userinput);
   let Fromusername = String(FromName);
   let usernamephone = String(WhichUser);
@@ -35,7 +32,6 @@ const Chat = () => {
       //   alert("Connected to server");
       setId(socket.id); // Set the socket ID in state
     });
-    console.log(socket); // Set the socket ID in state
     socket.emit("join", {
       groupchat: username,
       fromchat: Fromusername,
@@ -57,11 +53,17 @@ const Chat = () => {
       socket.off(); // Remove all event listeners
     };
   }, []);
+  console.log(id);
   useEffect(() => {
     socket.on("sendMessage", (data) => {
       setMessages((prevMessages) => [...prevMessages, data]);
-      console.log(id);
-      console.log(data.userid, data.message, data.id, data.whichuser);
+      console.log(
+        data.userFrom,
+        data.message,
+        data.id,
+        data.whichuser,
+        data.groupchatuser
+      );
     });
     return () => {
       socket.off();
@@ -103,8 +105,11 @@ const Chat = () => {
         {messages.map((item, i) => (
           <Message
             key={i}
-            user={item.id === id ? "" : item.userid}
+            user={item.id === id ? "" : item.userFrom}
+            // groupuser={item.id !== id ? userinput : item.groupchatuser}
+            groupuser={item.id === id ? "" : item.groupchatuser}
             message={item.message}
+            WhichUser={WhichUser}
           />
         ))}
       </div>
