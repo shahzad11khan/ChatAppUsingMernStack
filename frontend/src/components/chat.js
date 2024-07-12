@@ -2,15 +2,15 @@ import React, { useEffect, useState } from "react";
 import socketIo from "socket.io-client";
 import Message from "./message";
 import { userinput } from "./join";
-
 import { FromName, WhichUser } from "./Private";
+import EmojiPicker from "emoji-picker-react";
 let socket;
 const Endpoint = "http://localhost:8000/";
 const Chat = () => {
   const [messages, setMessages] = useState([]);
   const [id, setId] = useState("");
   const [inputMessage, setInputMessage] = useState("");
-
+  const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   let username = String(userinput);
   let Fromusername = String(FromName);
   let usernamephone = String(WhichUser);
@@ -23,7 +23,9 @@ const Chat = () => {
     username = null;
   }
   console.log(username, Fromusername, usernamephone);
-
+  const onEmojiClick = (emojiObject) => {
+    setInputMessage((prevInput) => prevInput + emojiObject.emoji);
+  };
   useEffect(() => {
     socket = socketIo(Endpoint, { transports: ["websocket"] });
 
@@ -127,6 +129,12 @@ const Chat = () => {
             className="flex-grow px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
           <button
+            onClick={() => setShowEmojiPicker((prev) => !prev)}
+            className="ml-2 px-4 py-2 text-white font-semibold hover:bg-cyan-300 rounded-md"
+          >
+            😀
+          </button>
+          <button
             onClick={sendMessage}
             className={`ml-2 px-4 py-2 text-white font-semibold rounded-md ${
               inputMessage
@@ -138,6 +146,11 @@ const Chat = () => {
             Send
           </button>
         </div>
+        {showEmojiPicker && (
+          <div className="absolute z-10">
+            <EmojiPicker onEmojiClick={onEmojiClick} />
+          </div>
+        )}
       </div>
     </div>
   );
