@@ -69,20 +69,7 @@ app.get("/api/searchinregister/:identifier", async (req, res) => {
 
   if (identifier) {
     // Check if an identifier is provided
-    try {
-      // Attempt to find user by phone number first
-      const register = await RegisterUser.findOne({ phone: identifier });
-      // console.log("phone", register); // Log the found user (if any)
-
-      if (register) {
-        return res.json(register); // Return user data if found by phone
-      }
-
-      // If phone not found, try searching by username
-      const registerByUsername = await RegisterUser.findOne({
-        user: identifier,
-      });
-      // console.log("username", registerByUsername); // Log the found user (if any)
+    try {er (if any)
 
       if (registerByUsername) {
         return res.json(registerByUsername); // Return user data if found by username
